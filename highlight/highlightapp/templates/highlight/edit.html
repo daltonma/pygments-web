@@ -1,0 +1,85 @@
+{% extends "highlight/layout.html" %}
+{% block title %}
+Editor
+{% endblock %}
+{% block body %}
+<script src="/static/ace-builds/src-noconflict/ace.js"></script>
+<script>
+    blob = 0;
+    renderedcode = 0;
+    function submit()
+    {
+        value = window.editor.getValue();
+        token = $("input[name=csrfmiddlewaretoken]").val();
+        $.post("/{{ language }}/", {code: value, csrfmiddlewaretoken: token}, function (data)
+        {
+            $(".rendered").html(data);
+            html = "<html>" + data + "</html>";
+            // blob = new Blob([html], {type: "text/html"});
+            // renderedcode = URL.createObjectURL(blob);
+            // $("#download").html("<a id='downloadu' href='#'>Download</a>");
+            // $("#downloadu").attr("href", renderedcode);
+            // $("#downloadu").attr("download", "code.html");
+        });
+        $.ajax({
+            method: "POST",
+            url: "/pdf/{{ language }}/",
+            xhrFields: {
+               responseType: 'blob'
+            },
+            data: {code: value, csrfmiddlewaretoken: token}})
+        .done(
+            function (data)
+            {
+                blob = new Blob([data], {type: "application/pdf"});
+                renderedcode = URL.createObjectURL(blob);
+                $("#download").html("<a id='downloadu' href='#'>Download</a>");
+                $("#downloadu").attr("href", renderedcode);
+                $("#downloadu").attr("download", "code.pdf");
+            }
+        );
+    }
+</script>
+<style type="text/css" media="screen">
+    body {
+        overflow-y:auto;
+    }
+
+    .ace_editor {
+        border: 1px solid lightgray;
+		margin: auto;
+		height: 400px;
+		width: 110%;
+		font-size: 30px;
+    }
+</style>
+<div style="min-height: 20px"></div>
+{% csrf_token %}
+<div class="col-7">
+<div id="editor"></div>
+</div>
+</div>
+<button class="form-control" onclick="submit();">Highlight!</button>
+<div style="min-height: 20px"></div>
+<div class="rendered"></div>
+<div id="download"></div>
+
+<script>
+</script>
+
+
+
+<script>
+    var editor = ace.edit("editor");
+    var editorDiv = document.getElementById("editor");
+    editor.setTheme("ace/theme/xcode");
+    language = "{{ language }}";
+    if (language === "c" || language === "cpp")
+    {
+        editor.session.setMode("ace/mode/c_cpp");
+    }
+    else {
+        editor.session.setMode("ace/mode/{{ language }}");
+    }
+</script>
+{% endblock %}

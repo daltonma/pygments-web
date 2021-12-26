@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <script src="/static/ace-builds/src-noconflict/ace.js"></script>
+<style type="text/css" media="screen">
+    body {
+        overflow-y:auto;
+    }
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .ace_editor {
+        font-size: 45px;
+    }
+</style>
+<div style="min-height: 20px"></div>
+<div class="col-7">
+<div id="editor"></div>
+</div>
+<div style="min-height: 20px"></div>
+<div style="min-height: 600px;">  </div>
+<script>
+    var editor = ace.edit("editor");
+    var editorDiv = document.getElementById("editor");
+    editor.setTheme("ace/theme/xcode");
+    language = "{{ language }}";
+    if (language === "c" || language === "cpp")
+    {
+        editor.session.setMode("ace/mode/c_cpp");
+    }
+    else {
+        editor.session.setMode("ace/mode/{{ language }}");
+    }
+</script>
+</html>
