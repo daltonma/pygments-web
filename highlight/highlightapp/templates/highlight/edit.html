@@ -9,10 +9,14 @@ Editor
     renderedcode = 0;
     function submit()
     {
+        // Get code
         value = window.editor.getValue();
+        // Get CSRF token
         token = $("input[name=csrfmiddlewaretoken]").val();
+        // Render
         $.post("/{{ language }}/", {code: value, csrfmiddlewaretoken: token}, function (data)
         {
+            // Paste onto html
             $(".rendered").html(data);
             html = "<html>" + data + "</html>";
             // blob = new Blob([html], {type: "text/html"});
@@ -21,6 +25,7 @@ Editor
             // $("#downloadu").attr("href", renderedcode);
             // $("#downloadu").attr("download", "code.html");
         });
+        // get pdf
         $.ajax({
             method: "POST",
             url: "/pdf/{{ language }}/",
@@ -31,8 +36,10 @@ Editor
         .done(
             function (data)
             {
+                // Add download link to blob
                 blob = new Blob([data], {type: "application/pdf"});
                 renderedcode = URL.createObjectURL(blob);
+                // Directly download
                 $("#download").html("<a id='downloadu' href='#'>Download</a>");
                 $("#downloadu").attr("href", renderedcode);
                 $("#downloadu").attr("download", "code.pdf");
