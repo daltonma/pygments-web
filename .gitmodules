@@ -1,0 +1,3 @@
+[submodule "highlight/highlightapp/static/ace-builds"]
+	path = highlight/highlightapp/static/ace-builds
+	url = https://github.com/ajaxorg/ace-builds
