@@ -14,6 +14,7 @@ from pygments.lexers.c_cpp import CLexer, CppLexer
 from pygments.lexers.shell import BashLexer, BashSessionLexer, FishShellLexer
 from pygments.lexers.html import HtmlLexer
 from weasyprint import CSS, HTML
+from weasyprint.fonts import FontConfiguration
 
 env = Environment(
     loader=PackageLoader("highlightapp"),
@@ -65,6 +66,7 @@ def topdf(request, language=""):
     """
     This method puts the highlighted code into a pdf.
     """
+    font_config = FontConfiguration()
     if request.method == "POST":
         if not language:
             return HttpResponse(status=400)
@@ -79,10 +81,10 @@ def topdf(request, language=""):
         template = env.get_template("highlight/highlight.html")
         htmlresult = template.render(highlight=result)
         # Pdf
-        css = CSS(string=rainbow)
+        css = CSS(string=rainbow, font_config=font_config)
         html = HTML(string=htmlresult)
         pdfresult = html.write_pdf(
-            presentational_hints=True, stylesheets=[css])
+            presentational_hints=True, stylesheets=[css], font_config=font_config)
         # Create response headers
         response = HttpResponse(pdfresult, content_type='application/pdf;')
         response['Content-Disposition'] = 'inline; filename=code.pdf'
