@@ -78,11 +78,27 @@ def topdf(request, language=""):
         formatter = HtmlFormatter(linenos=True)
         result = highlight(code, highlighter, formatter)
         # Render template
-        template = env.get_template("highlight/highlight.html")
+        template = env.get_template("highlight/topdf.html")
         htmlresult = template.render(highlight=result)
+        # Font configuration details
+        # fontcss = """
+        #    @font-face {
+        #        font-family: "code";
+        #        src: url("static/cascadia.ttf");
+        #    }
+        #    pre {
+        #        font-family: 'code';
+        #    }
+        #    code {
+        #        font-family: 'code';
+        #    }
+        # """
+        # font = CSS(string=fontcss, font_config=font_config)
         # Pdf
+        # Render CSS and HTML
         css = CSS(string=rainbow, font_config=font_config)
         html = HTML(string=htmlresult)
+        # Write PDF
         pdfresult = html.write_pdf(
             presentational_hints=True, stylesheets=[css], font_config=font_config)
         # Create response headers
