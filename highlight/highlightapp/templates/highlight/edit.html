@@ -14,7 +14,7 @@ Editor
         // Get CSRF token
         token = $("input[name=csrfmiddlewaretoken]").val();
         // Render
-        $.post("{{ language }}/", {code: value, csrfmiddlewaretoken: token}, function (data)
+        $.post("", {code: value, csrfmiddlewaretoken: token}, function (data)
         {
             // Paste onto html
             $(".rendered").html(data);
