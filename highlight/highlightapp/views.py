@@ -74,7 +74,11 @@ def topdf(request, language=""):
         if not code:
             return HttpResponse(status=400)
         # Highlight
-        highlighter = get_lexer_by_name(language)
+        # If lexer not found ... return empty page
+        try:
+            highlighter = get_lexer_by_name(language)
+        except Exception:
+            return HttpResponse(status=404)
         formatter = HtmlFormatter(linenos=True)
         result = highlight(code, highlighter, formatter)
         # Render template
