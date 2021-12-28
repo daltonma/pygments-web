@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from jinja2 import Environment, PackageLoader, select_autoescape
 from pygments import highlight
-from pygments.formatters import HtmlFormatter
+from pygments.formatter import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 from pygments.lexers.python import PythonLexer
 from pygments.lexers.c_cpp import CLexer, CppLexer
@@ -80,20 +80,6 @@ def topdf(request, language=""):
         # Render template
         template = env.get_template("highlight/topdf.html")
         htmlresult = template.render(highlight=result)
-        # Font configuration details
-        # fontcss = """
-        #    @font-face {
-        #        font-family: "code";
-        #        src: url("static/cascadia.ttf");
-        #    }
-        #    pre {
-        #        font-family: 'code';
-        #    }
-        #    code {
-        #        font-family: 'code';
-        #    }
-        # """
-        # font = CSS(string=fontcss, font_config=font_config)
         # Pdf
         # Render CSS and HTML
         css = CSS(string=rainbow, font_config=font_config)
