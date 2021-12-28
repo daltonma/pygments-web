@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from jinja2 import Environment, PackageLoader, select_autoescape
 from pygments import highlight
-from pygments.formatter import HtmlFormatter
+from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 from pygments.lexers.python import PythonLexer
 from pygments.lexers.c_cpp import CLexer, CppLexer
