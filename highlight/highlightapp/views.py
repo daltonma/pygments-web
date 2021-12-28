@@ -40,13 +40,22 @@ def highlightc(request, language=""):
     """
     This provides the editor interface and the syntax highlighter.
     """
+    # If lexer not found ... return empty page
+    try:
+        highlighter = get_lexer_by_name(language)
+    except Exception:
+        return HttpResponse(status=404)
     if request.method == "POST":
         # Get code
         code = request.POST.get("code")
         if not code:
             return HttpResponse(status=400)
         # Highlight
-        highlighter = get_lexer_by_name(language)
+        # If lexer not found ... return empty page
+        try:
+            highlighter = get_lexer_by_name(language)
+        except Exception:
+            return HttpResponse(status=404)
         formatter = HtmlFormatter(linenos=True)
         result = highlight(code, highlighter, formatter)
         # Return highlighted code
