@@ -56,7 +56,7 @@ def highlightc(request, language=""):
             highlighter = get_lexer_by_name(language)
         except Exception:
             return HttpResponse(status=404)
-        formatter = HtmlFormatter(linenos=True)
+        formatter = HtmlFormatter(linenos="inline")
         result = highlight(code, highlighter, formatter)
         # Return highlighted code
         return render(request, "highlight/highlight.html", {
@@ -88,7 +88,7 @@ def topdf(request, language=""):
             highlighter = get_lexer_by_name(language)
         except Exception:
             return HttpResponse(status=404)
-        formatter = HtmlFormatter(linenos=True)
+        formatter = HtmlFormatter(linenos="inline")
         result = highlight(code, highlighter, formatter)
         # Render template
         template = env.get_template("highlight/topdf.html")
