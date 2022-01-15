@@ -1,5 +1,6 @@
-{% extends "highlight/layout.html" %} {% block title %} Editor {% endblock %} {%
-block body %}
+{% extends "highlight/layout.html" %} 
+{% block title %} Editor {% endblock %} 
+{% block body %}
 <script src="/static/ace-builds/src-noconflict/ace.js"></script>
 <script>
   blob = 0;
@@ -7,10 +8,12 @@ block body %}
   function submit() {
     // Get code
     value = window.editor.getValue();
+    // Get title
+    title = $("#document-name").val();
     // Get CSRF token
     token = $("input[name=csrfmiddlewaretoken]").val();
     // Render
-    $.post("", { code: value, csrfmiddlewaretoken: token }, function (data) {
+    $.post("", { code: value, csrfmiddlewaretoken: token, title: title }, function (data) {
       // Paste onto html
       $(".rendered").html(data);
       html = "<html>" + data + "</html>";
@@ -27,7 +30,7 @@ block body %}
       xhrFields: {
         responseType: "blob",
       },
-      data: { code: value, csrfmiddlewaretoken: token },
+      data: { code: value, csrfmiddlewaretoken: token, title:title },
     }).done(function (data) {
       // Add download link to blob
       blob = new Blob([data], { type: "application/pdf" });
@@ -54,15 +57,20 @@ block body %}
 </style>
 <div style="min-height: 20px"></div>
 {% csrf_token %}
-<div class="col-7">
+<div class="col-7 mb-3">
   <div id="editor"></div>
 </div>
-<div class="row">
-  <div class="col-4"></div>
+<div class="row mb-3">
+  <div class="col-4">
+    <div class="input-group">
+      <span class="input-group-text">Title: </span>
+      <input id="document-name" type="text" class="form-control" placeholder="">
+    </div>
+  </div>
 </div>
 <button class="form-control" onclick="submit();">Highlight!</button>
 <div style="min-height: 20px"></div>
-<div class="rendered"></div>
+<div class="rendered" style="max-width: 70%;"></div>
 <div id="download"></div>
 
 <script></script>

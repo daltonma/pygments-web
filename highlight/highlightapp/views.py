@@ -48,8 +48,10 @@ def highlightc(request, language=""):
     if request.method == "POST":
         # Get code
         code = request.POST.get("code")
-        if not code:
-            return HttpResponse(status=400)
+        
+        title = request.POST.get("title")
+        if not title:
+                return HttpResponse(status=400)
         # Highlight
         # If lexer not found ... return empty page
         try:
@@ -60,7 +62,8 @@ def highlightc(request, language=""):
         result = highlight(code, highlighter, formatter)
         # Return highlighted code
         return render(request, "highlight/highlight.html", {
-            "highlight": result
+            "highlight": result,
+            "title": title
         })
     if not language:
         return HttpResponse(status=404)
@@ -82,6 +85,9 @@ def topdf(request, language=""):
         code = request.POST.get("code")
         if not code:
             return HttpResponse(status=400)
+        title = request.POST.get("title")
+        if not title:
+                return HttpResponse(status=400)
         # Highlight
         # If lexer not found ... return empty page
         try:
@@ -92,7 +98,7 @@ def topdf(request, language=""):
         result = highlight(code, highlighter, formatter)
         # Render template
         template = env.get_template("highlight/topdf.html")
-        htmlresult = template.render(highlight=result)
+        htmlresult = template.render(highlight=result, title=title)
         # Pdf
         # Render CSS and HTML
         css = CSS(string=rainbow, font_config=font_config)
