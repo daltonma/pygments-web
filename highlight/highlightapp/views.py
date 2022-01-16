@@ -13,6 +13,7 @@ from pygments.lexers.python import PythonLexer
 from pygments.lexers.c_cpp import CLexer, CppLexer
 from pygments.lexers.shell import BashLexer, BashSessionLexer, FishShellLexer
 from pygments.lexers.html import HtmlLexer
+from pygments.lexers.markup import MarkdownLexer
 from weasyprint import CSS, HTML
 from weasyprint.fonts import FontConfiguration
 
@@ -51,7 +52,7 @@ def highlightc(request, language=""):
         
         title = request.POST.get("title")
         if not title:
-                return HttpResponse(status=400)
+            title = " "
         # Highlight
         # If lexer not found ... return empty page
         try:
@@ -87,7 +88,7 @@ def topdf(request, language=""):
             return HttpResponse(status=400)
         title = request.POST.get("title")
         if not title:
-                return HttpResponse(status=400)
+            title = " "
         # Highlight
         # If lexer not found ... return empty page
         try:
