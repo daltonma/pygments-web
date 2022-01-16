@@ -1,5 +1,5 @@
 # pygments-web
-This renders code as syntax highlighted rich text, to be copied-and-pasted in presentations or downloaded as a pdf (currently in development).
+This renders code as syntax highlighted rich text, to be copied-and-pasted in presentations or downloaded as a pdf.
 
 ## Dependencies
  * Python 3
