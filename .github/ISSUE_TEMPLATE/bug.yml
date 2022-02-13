@@ -27,11 +27,11 @@ body:
     validations:
       required: true
   - type: textarea
-    id: logs
+    id: system-details
     attributes:
-      label: "Relevant log output"
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      label: "Details about the system"
+      description: Fill in the TODOs in the following textbox.
+      value: "OS: TODO \n Browser: TODO"
   - type: checkboxes
     id: terms
     attributes:
