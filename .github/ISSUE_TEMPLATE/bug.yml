@@ -31,7 +31,7 @@ body:
     attributes:
       label: "Details about the system"
       description: Fill in the TODOs in the following textbox.
-      value: "OS: TODO \n Browser: TODO"
+      value: "OS: TODO \nBrowser: TODO"
   - type: checkboxes
     id: terms
     attributes:
