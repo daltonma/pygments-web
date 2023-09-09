@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "highlight"
+version = "0.1.0"
+description = ""
+authors = ["Dalton Ma"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+weasyprint = "52.5"
+Pygments = "^2.16.1"
+Django = "^4.2.5"
+whitenoise = "^6.5.0"
+jinja2 = "^3.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
