@@ -18,6 +18,8 @@ from pygments.lexers.markup import MarkdownLexer
 if supportsWeasyprint:
     from weasyprint import CSS, HTML
     from weasyprint.fonts import FontConfiguration
+    from PyPDF2 import PdfReader, PdfWriter
+    from io import BytesIO
 
 env = Environment(
     loader=PackageLoader("highlightapp"),
@@ -111,10 +113,23 @@ def topdf(request, language=""):
         # Write PDF
         pdfresult = html.write_pdf(
             presentational_hints=True, stylesheets=[css], font_config=font_config)
+        # Set metadata
+        pdf_reader = PdfReader(BytesIO(pdfresult))
+        metadata = pdf_reader.metadata
+        pdf_writer = PdfWriter()
+        pdf_writer.append_pages_from_reader(pdf_reader)
+        pdf_writer.add_metadata({
+            '/Producer': 'Highlight by @bohrium2b',
+            '/Title': title
+        })
+        with BytesIO() as finpdf:
+            pdf_writer.write(finpdf)
+            finpdf.seek(0)
+            response = HttpResponse(finpdf, content_type='application/pdf;')
+            response['Content-Disposition'] = 'inline; filename=code.pdf'
+            response['Content-Transfer-Encoding'] = 'binary'
         # Create response headers
-        response = HttpResponse(pdfresult, content_type='application/pdf;')
-        response['Content-Disposition'] = 'inline; filename=code.pdf'
-        response['Content-Transfer-Encoding'] = 'binary'
+        
         # Send response
         return response
     return HttpResponse(status=200)
