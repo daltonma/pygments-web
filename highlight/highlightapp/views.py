@@ -120,7 +120,8 @@ def topdf(request, language=""):
         pdf_writer.append_pages_from_reader(pdf_reader)
         pdf_writer.add_metadata({
             '/Producer': 'Highlight by @bohrium2b',
-            '/Title': title
+            '/Title': title,
+            '/Application': 'Highlight by @bohrium2b'
         })
         with BytesIO() as finpdf:
             pdf_writer.write(finpdf)
