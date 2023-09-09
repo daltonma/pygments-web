@@ -82,7 +82,10 @@
   language = "{{ language }}";
   if (language === "c" || language === "cpp") {
     editor.session.setMode("ace/mode/c_cpp");
-  } else {
+  } else if (language == "arduino") {
+    editor.session.setMode("ace/mode/c_cpp");
+  }
+  else {
     editor.session.setMode("ace/mode/{{ language }}");
   }
 </script>
