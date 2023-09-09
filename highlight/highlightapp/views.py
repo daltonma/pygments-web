@@ -1,7 +1,8 @@
 """
 This file provides views for the Pygments Web App.
 """
-
+import platform
+supportsWeasyprint = True if platform.system() == "Linux" or platform.system() == "Darwin" else False
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
@@ -14,8 +15,9 @@ from pygments.lexers.c_cpp import CLexer, CppLexer
 from pygments.lexers.shell import BashLexer, BashSessionLexer, FishShellLexer
 from pygments.lexers.html import HtmlLexer
 from pygments.lexers.markup import MarkdownLexer
-from weasyprint import CSS, HTML
-from weasyprint.fonts import FontConfiguration
+if supportsWeasyprint:
+    from weasyprint import CSS, HTML
+    from weasyprint.fonts import FontConfiguration
 
 env = Environment(
     loader=PackageLoader("highlightapp"),
@@ -79,6 +81,8 @@ def topdf(request, language=""):
     """
     This method puts the highlighted code into a pdf.
     """
+    if not supportsWeasyprint:
+        return HttpResponse(status=404)
     font_config = FontConfiguration()
     if request.method == "POST":
         if not language:
