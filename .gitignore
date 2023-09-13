@@ -3,3 +3,4 @@
 highlight/db.sqlite3
 .vscode/*
 highlight/highlightapp/static/admin/*
+highlight/highlightapp/static/node_modules/*
