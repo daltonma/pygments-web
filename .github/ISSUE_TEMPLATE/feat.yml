@@ -1,0 +1,42 @@
+name: New Feature
+description: Request a feature/enhancement
+title: "[Feat]: "
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Hi! Thanks for taking the time to contribute to this FOSS project! 
+  - type: textarea
+    id: description
+    attributes:
+      label: "What would you like to see/ What should we change?"
+      description: 
+      placeholder: Tell us what we should change!
+      value: "Something happened ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: "Version"
+      description: What version of our software are you running?
+      options:
+        - v1.0.0
+        - Dev v0.1.1
+    validations:
+      required: true
+  - type: textarea
+    id: system-details
+    attributes:
+      label: "Details about the system"
+      description: Fill in the TODOs in the following textbox.
+      value: "OS: TODO \nBrowser: TODO"
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](/CONTRIBUTING.md)
+      options:
+        - label: I agree to follow this project's Contributing Guidelines
+          required: true
