@@ -1,7 +1,50 @@
-{% extends "highlight/layout.html" %} 
-{% block title %} Editor {% endblock %} 
+{% extends "highlight/layout.html" %}
+{% block title %} Editor {% endblock %}
 {% block body %}
 <script src="/static/ace-builds/src-noconflict/ace.js"></script>
+<link rel="stylesheet" data-name="vs/editor/editor.main"
+  href="/static/node_modules/monaco-editor/min/vs/editor/editor.main.css">
+<script>
+  var require = { paths: { vs: '/static/node_modules/monaco-editor/dev/vs' } };
+</script>
+<script src="/static/node_modules/monaco-editor/dev/vs/loader.js"></script>
+<script src="/static/node_modules/monaco-editor/dev/vs/editor/editor.main.nls.js"></script>
+<script src="/static/node_modules/monaco-editor/dev/vs/editor/editor.main.js"></script>
+
+
+<style type="text/css" media="screen">
+  body {
+    overflow-y: auto;
+  }
+</style>
+<div style="min-height: 20px"></div>
+{% csrf_token %}
+
+<div id="container" class="form-control" style="height:400px;margin-bottom: 10px;"></div>
+<div class="row mb-3"></div>
+<div class="row mb-3">
+  <div class="col-4">
+    <div class="input-group">
+      <span class="input-group-text">Title: </span>
+      <input id="document-name" type="text" class="form-control" placeholder="">
+    </div>
+  </div>
+</div>
+<button class="form-control" max-width="20%" onclick="submit();">Highlight!</button>
+<div style="min-height: 20px"></div>
+<div class="rendered" style="max-width: 70%;"></div>
+<div id="download"></div>
+<script>
+  var language = "{{language}}";
+  if (language == "arduino") {
+    language = "cpp";
+  }
+  window.editor = monaco.editor.create(document.getElementById('container'), {
+    language: language,
+    theme: 'vs',
+    fontFamily: 'code',
+  });
+</script>
 <script>
   blob = 0;
   renderedcode = 0;
@@ -42,40 +85,8 @@
     });
   }
 </script>
-<style type="text/css" media="screen">
-  body {
-    overflow-y: auto;
-  }
-
-  .ace_editor {
-    border: 1px solid lightgray;
-    margin: auto;
-    height: 400px;
-    width: 110%;
-    font-size: 30px;
-  }
-</style>
-<div style="min-height: 20px"></div>
-{% csrf_token %}
-<div class="col-7 mb-3">
-  <div id="editor"></div>
-</div>
-<div class="row mb-3">
-  <div class="col-4">
-    <div class="input-group">
-      <span class="input-group-text">Title: </span>
-      <input id="document-name" type="text" class="form-control" placeholder="">
-    </div>
-  </div>
-</div>
-<button class="form-control" onclick="submit();">Highlight!</button>
-<div style="min-height: 20px"></div>
-<div class="rendered" style="max-width: 70%;"></div>
-<div id="download"></div>
-
 <script></script>
-
-<script>
+<!--<script>
   var editor = ace.edit("editor");
   var editorDiv = document.getElementById("editor");
   editor.setTheme("ace/theme/xcode");
@@ -88,5 +99,6 @@
   else {
     editor.session.setMode("ace/mode/{{ language }}");
   }
-</script>
+</script>-->
+
 {% endblock %}
